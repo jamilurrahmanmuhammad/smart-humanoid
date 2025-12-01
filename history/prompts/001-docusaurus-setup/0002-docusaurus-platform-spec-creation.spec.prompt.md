@@ -26,7 +26,7 @@ tests:
 
 User executed `/sp.specify` command to create a specification for setting up Docusaurus as the platform infrastructure. The workflow included:
 
-1. Reading input specification from `/mnt/c/mounted/docusaurus_spec_chatpt.txt` containing Robolearn-style requirements
+1. Reading input specification from `/mnt/c/mounted/docusaurus_spec_chatpt.txt` containing design requirements
 2. Reviewing the constitution to understand project structure requirements
 3. User clarifying that features should potentially be structured as separate libraries/modules
 4. User selecting Option A (platform-level at project root) over book-specific or monorepo approaches
@@ -39,7 +39,7 @@ Created comprehensive specification for Docusaurus Platform Setup:
 **Key decisions:**
 - Platform-level infrastructure at project root (shared across all books)
 - Multi-book support via docs plugin instances
-- Robolearn-style dark theme (#0D0D0F background, #4ECFFE accent)
+- Professional dark theme (#0D0D0F background, #4ECFFE accent)
 - Hero section with animated headline highlight
 - Constitution compliance (WCAG 2.1 AA, RTL-ready, i18n-ready)
 
