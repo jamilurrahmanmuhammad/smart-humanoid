@@ -1,0 +1,6 @@
+# Ignore downloaded packages
+*.deb
+*.rpm
+*.dmg
+*.exe
+*.msi
