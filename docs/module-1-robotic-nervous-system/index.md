@@ -42,6 +42,18 @@ This chapter introduces ROS 2 as the robot's nervous system, explaining nodes, t
 | [Builder](./chapter-2-ros2-architecture-builder) | Intermediate | Makers with Arduino/Raspberry Pi experience |
 | [Engineer](./chapter-2-ros2-architecture-engineer) | Advanced | Engineers familiar with industrial control systems |
 
+### Chapter 3: Humanoid Robot Modeling with URDF
+
+This chapter introduces URDF (Unified Robot Description Format) as the digital anatomy of a robot. You'll learn how robots understand their own structure through links, joints, kinematic chains, and transform trees—essential concepts for motion planning and sensor fusion.
+
+**Choose your learning path:**
+
+| Path | Level | Best For |
+|------|-------|----------|
+| [Explorer](./chapter-3-urdf-modeling-explorer) | Beginner | Software developers, conceptual understanding focus |
+| [Builder](./chapter-3-urdf-modeling-builder) | Intermediate | Makers building servo-based robots, 3D printing enthusiasts |
+| [Engineer](./chapter-3-urdf-modeling-engineer) | Advanced | Engineers working with industrial manipulators, production systems |
+
 *More chapters coming soon...*
 
 ## Prerequisites
