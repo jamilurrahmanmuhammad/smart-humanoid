@@ -46,11 +46,17 @@ As an author, I want a pre-configured documentation folder structure so that I c
 
 **Why this priority**: Enables content creation, but only useful after visual scaffold exists.
 
+**Content Hierarchy**:
+- **Modules** are top-level learning units (e.g., "Introduction to Robotics", "Motion Planning")
+- **Chapters** are children nested within modules (e.g., Module 1 → Chapter 1.1, 1.2, 1.3)
+- This hierarchy enables progressive learning paths where users complete chapters within a module before advancing
+
 **Acceptance Scenarios**:
 
-1. Given the platform is set up, when an author accesses the docs area, then they find organized sections: introduction, modules, chapters, assistant content, and assets
-2. Given the documentation structure exists, when navigating to the docs section, then the sidebar reflects the folder hierarchy
+1. Given the platform is set up, when an author accesses the docs area, then they find a hierarchical structure with modules as top-level categories containing chapters as children, plus assistant content and assets sections
+2. Given the documentation structure exists, when navigating to the docs section, then the sidebar reflects the module > chapter hierarchy with expandable module categories
 3. Given the multi-book structure, when adding a new book, then it can be added without modifying core configuration
+4. Given a module exists, when an author adds a new chapter, then it appears nested under the parent module in the sidebar
 
 ---
 
@@ -127,7 +133,10 @@ As a developer, I want automated tests to verify key UI components render correc
 - **FR-026**: Homepage MUST NOT include default blog or template elements
 
 #### Multi-Book Documentation Structure
-- **FR-027**: Platform MUST include a documentation area with structure for the first book containing: introduction, modules, chapters, assistant content, and assets sections
+- **FR-027**: Platform MUST include a documentation area with a hierarchical structure where modules are top-level categories and chapters are nested children within modules
+- **FR-027a**: Each module MUST be an expandable sidebar category containing its child chapters
+- **FR-027b**: Chapters MUST only exist as children of modules, not as standalone top-level items
+- **FR-027c**: Documentation structure MUST include introduction (top-level), modules (with nested chapters), assistant content, and assets sections
 - **FR-028**: Platform MUST be structured to support additional books as separate instances
 - **FR-029**: Documentation structure MUST support future personalization features
 - **FR-030**: Documentation structure MUST support future translation features
@@ -282,9 +291,27 @@ This specification adheres to the AI-Native Learning Constitution:
 
 - **Platform**: The shared infrastructure at project root; serves all books
 - **Book**: An independent documentation instance within the platform; has its own content and sidebar
+- **Module**: A top-level learning unit within a book (e.g., "Introduction to Robotics"); contains multiple chapters; displayed as expandable category in sidebar
+- **Chapter**: A focused learning topic nested within a module (e.g., "Chapter 1.1: Robot Anatomy"); always a child of a module, never standalone
 - **Hero Component**: The main landing section; contains platform branding, headline, buttons, and diagram placeholder
 - **Navbar**: The platform navigation header; shared across all books with consistent styling
 - **Theme Configuration**: Global styling rules; defines colors, typography, spacing, and animations
+
+### Content Hierarchy Diagram
+
+```
+Book
+├── Introduction (standalone page)
+├── Module 1: [Topic Name]
+│   ├── Chapter 1.1: [Subtopic]
+│   ├── Chapter 1.2: [Subtopic]
+│   └── Chapter 1.3: [Subtopic]
+├── Module 2: [Topic Name]
+│   ├── Chapter 2.1: [Subtopic]
+│   └── Chapter 2.2: [Subtopic]
+├── Assistant Content (RAG resources)
+└── Assets (images, diagrams)
+```
 
 ---
 
@@ -295,7 +322,7 @@ This specification adheres to the AI-Native Learning Constitution:
 - **SC-003**: All 5 navbar elements are visible and correctly positioned
 - **SC-004**: Hero section occupies 50-60% of viewport height on desktop display
 - **SC-005**: Right-side diagram placeholder is visible and correctly positioned
-- **SC-006**: Documentation structure contains all required sections
+- **SC-006**: Documentation structure contains hierarchical module > chapter organization with modules as expandable sidebar categories
 - **SC-007**: Site builds successfully with zero errors and zero warnings
 - **SC-008**: Automated tests pass for navbar, hero, and button presence
 - **SC-009**: Site deploys successfully via automated workflow

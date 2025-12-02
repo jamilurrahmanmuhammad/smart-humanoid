@@ -135,11 +135,11 @@
 
 ### Tests for User Story 3 (TDD - Write FIRST, must FAIL) ⚠️
 
-- [ ] T052 [P] [US3] E2E test: /docs route loads intro page successfully in `tests/e2e/docs.spec.ts`
-- [ ] T053 [P] [US3] E2E test: sidebar displays with auto-generated hierarchy in `tests/e2e/docs.spec.ts`
-- [ ] T054 [P] [US3] E2E test: sidebar shows "modules" category in `tests/e2e/docs.spec.ts`
-- [ ] T055 [P] [US3] E2E test: sidebar shows "chapters" category in `tests/e2e/docs.spec.ts`
-- [ ] T056 [US3] Run tests - verify ALL tests FAIL (RED phase)
+- [x] T052 [P] [US3] E2E test: /docs route loads intro page successfully in `tests/e2e/docs.spec.ts`
+- [x] T053 [P] [US3] E2E test: sidebar displays with auto-generated hierarchy in `tests/e2e/docs.spec.ts`
+- [x] T054 [P] [US3] E2E test: sidebar shows "modules" category in `tests/e2e/docs.spec.ts`
+- [x] T055 [P] [US3] E2E test: sidebar shows "chapters" category in `tests/e2e/docs.spec.ts`
+- [x] T056 [US3] Run tests - verify ALL tests FAIL (RED phase) - 4/4 tests fail as expected
 
 ### Implementation for User Story 3 (GREEN phase)
 

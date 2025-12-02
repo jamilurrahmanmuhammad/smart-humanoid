@@ -1,47 +1,57 @@
 ---
 sidebar_position: 1
+title: Welcome to Smart Humanoid
+description: An open educational platform for Physical AI and Humanoid Robotics
+keywords: [physical ai, humanoid robotics, robotics education, ai learning]
+# Safety metadata fields (for future use)
+safety_level: informational
+requires_supervision: false
+age_appropriate: all
 ---
 
-# Tutorial Intro
+# Welcome to Smart Humanoid
 
-Let's discover **Docusaurus in less than 5 minutes**.
+Build robots that **understand** the physical world.
+
+## About This Platform
+
+Smart Humanoid is an open educational platform for learning Physical AI and Humanoid Robotics. From fundamentals to advanced concepts, build your understanding through hands-on projects and expert-curated content.
 
 ## Getting Started
 
-Get started by **creating a new site**.
+### For Learners
 
-Or **try Docusaurus immediately** with **[docusaurus.new](https://docusaurus.new)**.
+1. **Explore Modules** - Start with our structured learning modules
+2. **Read Chapters** - Dive deep into comprehensive book chapters
+3. **Build Projects** - Apply your knowledge with hands-on exercises
 
-### What you'll need
+### For Contributors
 
-- [Node.js](https://nodejs.org/en/download/) version 20.0 or above:
-  - When installing Node.js, you are recommended to check all checkboxes related to dependencies.
+This platform is open source. Contributions are welcome:
 
-## Generate a new site
+- Content improvements and corrections
+- New modules and chapters
+- Translations (Urdu translation planned)
+- Technical enhancements
 
-Generate a new Docusaurus site using the **classic template**.
+## What You'll Learn
 
-The classic template will automatically be added to your project after you run the command:
+- **Physical AI Fundamentals** - Understanding how AI interacts with the physical world
+- **Humanoid Robotics** - Mechanics, sensors, and control systems
+- **Motion Planning** - How robots move and navigate
+- **Real-World Applications** - From research to industry
 
-```bash
-npm init docusaurus@latest my-website classic
-```
+## Prerequisites
 
-You can type this command into Command Prompt, Powershell, Terminal, or any other integrated terminal of your code editor.
+No prior robotics experience required. Basic programming knowledge is helpful but not mandatory.
 
-The command also installs all necessary dependencies you need to run Docusaurus.
+## Platform Features
 
-## Start your site
+- 🌙 **Dark Theme** - Easy on the eyes for long learning sessions
+- 📱 **Responsive** - Learn on any device
+- ♿ **Accessible** - WCAG 2.1 AA compliant
+- 🌐 **Translation Ready** - Urdu translation coming soon
 
-Run the development server:
+## Start Learning
 
-```bash
-cd my-website
-npm run start
-```
-
-The `cd` command changes the directory you're working with. In order to work with your newly created Docusaurus site, you'll need to navigate the terminal there.
-
-The `npm run start` command builds your website locally and serves it through a development server, ready for you to view at http://localhost:3000/.
-
-Open `docs/intro.md` (this page) and edit some lines: the site **reloads automatically** and displays your changes.
+Ready to begin? Explore the **Modules** and **Chapters** sections in the sidebar to start your journey into Physical AI and Humanoid Robotics.
