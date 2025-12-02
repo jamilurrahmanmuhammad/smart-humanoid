@@ -1,0 +1,553 @@
+openapi: 3.1.0
+info:
+  title: RAG Chatbot Assistant API
+  description: |
+    API for the Smart Humanoid textbook RAG chatbot.
+    Provides conversational learning with citation-grounded, persona-aware responses.
+
+    **Constitution Alignment**: Sections X-XI (Technology Platform), XVIII-XX (RAG Governance), XXIV-XXVII (Safety)
+  version: 1.0.0
+  contact:
+    name: Smart Humanoid Team
+
+servers:
+  - url: /api/v1
+    description: API v1
+
+tags:
+  - name: Chat
+    description: Chat conversation endpoints
+  - name: Sessions
+    description: Session management
+  - name: Health
+    description: Service health checks
+
+paths:
+  /chat:
+    post:
+      tags:
+        - Chat
+      summary: Send chat message
+      description: |
+        Send a message and receive a grounded response with citations.
+        Supports global, page-scoped, and selection-scoped queries.
+
+        **FR References**: FR-003, FR-004, FR-015, FR-018
+      operationId: sendChatMessage
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChatRequest'
+            examples:
+              globalQuery:
+                summary: Global book query
+                value:
+                  message: "What is embodied intelligence?"
+                  persona: "Explorer"
+                  query_type: "global"
+              pageScopedQuery:
+                summary: Page-scoped query
+                value:
+                  message: "What are nodes?"
+                  persona: "Builder"
+                  query_type: "page"
+                  current_chapter: 2
+              selectionScopedQuery:
+                summary: Selection-scoped query
+                value:
+                  message: "Explain this in simpler terms"
+                  persona: "Explorer"
+                  query_type: "selection"
+                  selected_text: "A node is a process that performs computation..."
+      responses:
+        '200':
+          description: Chat response with citations
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChatResponse'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                invalidPersona:
+                  summary: Invalid persona
+                  value:
+                    error: "validation_error"
+                    message: "Invalid persona type. Must be Explorer, Builder, Engineer, or Default."
+                    code: "INVALID_PERSONA"
+                selectionTooLong:
+                  summary: Selection exceeds limit
+                  value:
+                    error: "validation_error"
+                    message: "Selected text exceeds 2000 character limit."
+                    code: "SELECTION_TOO_LONG"
+        '503':
+          description: Service unavailable (content index unavailable)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                error: "service_unavailable"
+                message: "The content index is temporarily unavailable. Please try again later."
+                code: "INDEX_UNAVAILABLE"
+
+  /chat/stream:
+    post:
+      tags:
+        - Chat
+      summary: Stream chat response (SSE)
+      description: |
+        Send a message and receive streaming response via Server-Sent Events.
+        First token target: <5 seconds (NFR-001).
+
+        **FR References**: FR-003, FR-004, NFR-001
+      operationId: streamChatMessage
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChatRequest'
+      responses:
+        '200':
+          description: Streaming response
+          content:
+            text/event-stream:
+              schema:
+                type: string
+                description: |
+                  SSE stream with events:
+                  - `data: {"type": "content", "content": "..."}`
+                  - `data: {"type": "citation", "citation": {...}}`
+                  - `data: {"type": "done", "session_id": "...", "message_id": "..."}`
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
+
+  /sessions:
+    post:
+      tags:
+        - Sessions
+      summary: Create new chat session
+      description: |
+        Create a new chat session with persona and context settings.
+
+        **FR References**: FR-012, FR-015
+      operationId: createSession
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateSessionRequest'
+      responses:
+        '201':
+          description: Session created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SessionResponse'
+
+  /sessions/{session_id}:
+    get:
+      tags:
+        - Sessions
+      summary: Get session details
+      description: Retrieve session information and message history.
+      operationId: getSession
+      parameters:
+        - $ref: '#/components/parameters/SessionId'
+      responses:
+        '200':
+          description: Session details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SessionDetailResponse'
+        '404':
+          description: Session not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+    delete:
+      tags:
+        - Sessions
+      summary: End chat session
+      description: Mark session as inactive. Messages will be purged after 24h retention period.
+      operationId: endSession
+      parameters:
+        - $ref: '#/components/parameters/SessionId'
+      responses:
+        '204':
+          description: Session ended successfully
+        '404':
+          description: Session not found
+
+  /sessions/{session_id}/messages:
+    get:
+      tags:
+        - Sessions
+      summary: Get session messages
+      description: |
+        Retrieve messages for a session with pagination.
+        Only returns non-expired messages per FR-027.
+      operationId: getSessionMessages
+      parameters:
+        - $ref: '#/components/parameters/SessionId'
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 50
+            maximum: 100
+        - name: before
+          in: query
+          description: Cursor for pagination (message ID)
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Message list
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MessageListResponse'
+
+  /health:
+    get:
+      tags:
+        - Health
+      summary: Health check
+      description: Service health status including dependency checks.
+      operationId: healthCheck
+      responses:
+        '200':
+          description: Service healthy
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthResponse'
+        '503':
+          description: Service unhealthy
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthResponse'
+
+components:
+  parameters:
+    SessionId:
+      name: session_id
+      in: path
+      required: true
+      description: Session UUID
+      schema:
+        type: string
+        format: uuid
+
+  schemas:
+    PersonaType:
+      type: string
+      enum:
+        - Explorer
+        - Builder
+        - Engineer
+        - Default
+      description: |
+        Learner persona for response adaptation (Constitution Section XIII):
+        - **Explorer**: Software background, simulation-focused
+        - **Builder**: Arduino/Raspberry Pi experience, maker context
+        - **Engineer**: Industrial robotics, full technical depth
+        - **Default**: Balanced style, no specialized background assumed
+
+    QueryType:
+      type: string
+      enum:
+        - global
+        - page
+        - selection
+      description: |
+        Query scope:
+        - **global**: Search entire book (FR-003)
+        - **page**: Prioritize current chapter (FR-003)
+        - **selection**: Only use selected text (FR-018)
+
+    ChatRequest:
+      type: object
+      required:
+        - message
+      properties:
+        message:
+          type: string
+          minLength: 1
+          maxLength: 2000
+          description: User's question
+        session_id:
+          type: string
+          format: uuid
+          description: Existing session ID (creates new if not provided)
+        persona:
+          $ref: '#/components/schemas/PersonaType'
+          default: Default
+        query_type:
+          $ref: '#/components/schemas/QueryType'
+          default: global
+        current_chapter:
+          type: integer
+          minimum: 1
+          maximum: 20
+          description: Current chapter for page-scoped queries
+        selected_text:
+          type: string
+          maxLength: 2000
+          description: Selected text for selection-scoped queries (required when query_type=selection)
+
+    ChatResponse:
+      type: object
+      required:
+        - session_id
+        - message_id
+        - content
+        - citations
+        - query_type
+      properties:
+        session_id:
+          type: string
+          format: uuid
+        message_id:
+          type: string
+          format: uuid
+        content:
+          type: string
+          description: Assistant response
+        citations:
+          type: array
+          maxItems: 5
+          items:
+            $ref: '#/components/schemas/Citation'
+          description: Source citations (max 5 per FR-009)
+        has_safety_disclaimer:
+          type: boolean
+          default: false
+          description: Whether response includes safety warning (FR-021)
+        query_type:
+          $ref: '#/components/schemas/QueryType'
+        is_selection_scoped:
+          type: boolean
+          default: false
+          description: Indicates answer based on selection only (FR-019)
+
+    Citation:
+      type: object
+      required:
+        - chapter
+        - section
+        - heading
+        - quote
+        - link
+      properties:
+        chapter:
+          type: integer
+          minimum: 1
+          maximum: 20
+          description: Source chapter number
+        section:
+          type: string
+          maxLength: 100
+          description: Section identifier (e.g., "2.3.1")
+        heading:
+          type: string
+          maxLength: 200
+          description: Section heading
+        quote:
+          type: string
+          maxLength: 500
+          description: Verbatim quote extract (FR-005)
+        link:
+          type: string
+          format: uri
+          maxLength: 500
+          description: Deep link to source location (FR-010)
+        relevance_score:
+          type: number
+          minimum: 0
+          maximum: 1
+          description: Semantic similarity score
+
+    CreateSessionRequest:
+      type: object
+      properties:
+        persona:
+          $ref: '#/components/schemas/PersonaType'
+          default: Default
+        current_chapter:
+          type: integer
+          minimum: 1
+          maximum: 20
+        current_page:
+          type: string
+          maxLength: 255
+          description: Current page path
+
+    SessionResponse:
+      type: object
+      required:
+        - id
+        - persona
+        - created_at
+        - is_active
+      properties:
+        id:
+          type: string
+          format: uuid
+        persona:
+          $ref: '#/components/schemas/PersonaType'
+        current_chapter:
+          type: integer
+        current_page:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        is_active:
+          type: boolean
+
+    SessionDetailResponse:
+      allOf:
+        - $ref: '#/components/schemas/SessionResponse'
+        - type: object
+          properties:
+            message_count:
+              type: integer
+              description: Total messages in session
+            last_activity:
+              type: string
+              format: date-time
+              description: Timestamp of last message
+
+    MessageListResponse:
+      type: object
+      required:
+        - messages
+        - has_more
+      properties:
+        messages:
+          type: array
+          items:
+            $ref: '#/components/schemas/MessageSummary'
+        has_more:
+          type: boolean
+          description: More messages available
+        next_cursor:
+          type: string
+          description: Cursor for next page
+
+    MessageSummary:
+      type: object
+      required:
+        - id
+        - role
+        - content
+        - created_at
+        - query_type
+      properties:
+        id:
+          type: string
+          format: uuid
+        role:
+          type: string
+          enum:
+            - user
+            - assistant
+        content:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        query_type:
+          $ref: '#/components/schemas/QueryType'
+        citations:
+          type: array
+          items:
+            $ref: '#/components/schemas/Citation'
+        has_safety_disclaimer:
+          type: boolean
+
+    HealthResponse:
+      type: object
+      required:
+        - status
+        - timestamp
+      properties:
+        status:
+          type: string
+          enum:
+            - healthy
+            - degraded
+            - unhealthy
+        timestamp:
+          type: string
+          format: date-time
+        dependencies:
+          type: object
+          properties:
+            database:
+              type: string
+              enum: [healthy, unhealthy]
+            vector_store:
+              type: string
+              enum: [healthy, unhealthy]
+            llm_service:
+              type: string
+              enum: [healthy, unhealthy]
+        version:
+          type: string
+
+    ErrorResponse:
+      type: object
+      required:
+        - error
+        - message
+      properties:
+        error:
+          type: string
+          description: Error type
+        message:
+          type: string
+          description: Human-readable error message
+        code:
+          type: string
+          description: Error code for client handling
+        details:
+          type: object
+          description: Additional error details
+
+  responses:
+    ServiceUnavailable:
+      description: Service unavailable
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            error: "service_unavailable"
+            message: "The content index is temporarily unavailable. Please try again later."
+            code: "INDEX_UNAVAILABLE"
+
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: JWT token from authentication service
+
+security:
+  - bearerAuth: []
