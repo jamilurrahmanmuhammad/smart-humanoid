@@ -29,6 +29,7 @@ git clone https://github.com/jamilurrahmanmuhammad/smart-humanoid.git
 cd smart-humanoid
 
 # Create Python virtual environment
+cd backend
 python -m venv .venv
 source .venv/bin/activate  # On Windows: .venv\Scripts\activate
 
@@ -36,27 +37,106 @@ source .venv/bin/activate  # On Windows: .venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
+### Service Account Setup
+
+Before creating your `.env` file, you need accounts for three external services:
+
+#### 1. OpenAI API Key
+
+1. Go to [platform.openai.com](https://platform.openai.com)
+2. Sign in or create an account
+3. Navigate to **API Keys** in the sidebar
+4. Click **Create new secret key**
+5. Copy the key (starts with `sk-`)
+
+#### 2. Qdrant Cloud (Free Tier)
+
+1. Go to [cloud.qdrant.io](https://cloud.qdrant.io)
+2. Sign up for a free account
+3. Create a new **Free Cluster** (1GB storage, sufficient for textbook)
+4. Once created, copy:
+   - **Cluster URL**: `https://xxx-xxx.aws.cloud.qdrant.io:6333`
+   - **API Key**: Generate from cluster settings
+
+#### 3. Neon Serverless Postgres (Free Tier)
+
+1. Go to [neon.tech](https://neon.tech)
+2. Click **Sign Up** and create a free account
+3. Create a new project:
+   - **Project name**: `smart-humanoid` (or any name)
+   - **Database name**: `chatbot` (or any name)
+   - **Region**: Choose closest to you
+4. Once created, go to **Dashboard → Connection Details**
+5. Select **Connection string** tab
+6. Copy the connection string (format: `postgresql://user:password@ep-xxx.region.aws.neon.tech/dbname`)
+7. **Important**: Modify the connection string for asyncpg:
+   - Change `postgresql://` to `postgresql+asyncpg://`
+   - Add `?sslmode=require` at the end
+
+**Example transformation:**
+```
+Before: postgresql://user:pass@ep-xxx.us-east-1.aws.neon.tech/chatbot
+After:  postgresql+asyncpg://user:pass@ep-xxx.us-east-1.aws.neon.tech/chatbot?sslmode=require
+```
+
 ### Environment Variables
 
-Create `.env` file in project root:
+Create `.env` file from template:
+
+```bash
+# From backend directory
+cp .env.example .env
+```
+
+Edit `.env` with your real credentials (never commit this file):
 
 ```bash
 # OpenAI Configuration
-OPENAI_API_KEY=sk-your-api-key-here
+OPENAI_API_KEY=sk-proj-...  # Your real key
 
 # Qdrant Configuration
-QDRANT_URL=https://your-cluster.cloud.qdrant.io
-QDRANT_API_KEY=your-qdrant-api-key
+QDRANT_URL=https://xxx-xxx.aws.cloud.qdrant.io:6333
+QDRANT_API_KEY=...  # Your real key
 QDRANT_COLLECTION_NAME=textbook_chunks
 
 # Neon PostgreSQL Configuration
-DATABASE_URL=postgresql+asyncpg://user:pass@ep-xxx.region.aws.neon.tech/dbname
+DATABASE_URL=postgresql+asyncpg://user:pass@ep-xxx.region.aws.neon.tech/dbname?sslmode=require
 
 # Application Settings
 APP_ENV=development
 LOG_LEVEL=DEBUG
-CORS_ORIGINS=http://localhost:3000
+CORS_ORIGINS=["http://localhost:3000","http://localhost:8080"]
 ```
+
+### Connectivity Check
+
+**BLOCKING**: Before proceeding, verify all services are reachable:
+
+```bash
+# Run connectivity sanity-check (FR-ENV-002)
+python scripts/check_connectivity.py
+```
+
+Expected output if all services are configured correctly:
+```
+============================================================
+RAG Chatbot Connectivity Check
+============================================================
+
+1. Validating environment configuration...
+   ✅ Environment configuration valid
+
+2. Checking service connectivity...
+
+   ✅ OpenAI API: OpenAI API connected successfully (245ms)
+   ✅ Qdrant Vector DB: Qdrant connected successfully (312ms)
+   ✅ PostgreSQL Database: Database connected successfully (187ms)
+
+============================================================
+✅ All services healthy - Application ready!
+```
+
+If any service fails, fix the credentials in `.env` before continuing.
 
 ---
 
