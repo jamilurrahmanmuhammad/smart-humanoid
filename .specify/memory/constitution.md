@@ -2,31 +2,37 @@
   ============================================================================
   SYNC IMPACT REPORT
   ============================================================================
-  Version Change: 1.1.0 → 1.1.1
+  Version Change: 1.1.1 → 1.2.0
 
   Modified Principles:
-    - XII. Identity & Personalization: Added Reader Data Privacy subsection
-    - XXI. Translation Governance: Added future language expansion roadmap
-    - XXXVII. Content Review Gates: Added Accessibility Compliance gate
+    - XIII. Adaptive Content: Major expansion with content variant strategy
 
   Added Sections:
-    - Reader Data Privacy (under XII. Identity & Personalization)
-    - Accessibility Standards (new section after User Experience Consistency)
+    - Reader Baseline Assumption (under XIII. Adaptive Content)
+    - Content Variant Strategy (under XIII. Adaptive Content)
+    - Variant Differentiation Rules (under XIII. Adaptive Content)
 
   Removed Sections: None
 
+  Key Changes:
+    - Readers assumed to be generative AI users (not AI theorists)
+    - Three chapter variants required: Explorer, Builder, Engineer
+    - Hackathon-aligned naming convention for variants
+    - Differentiation via examples AND content depth
+
   Templates Requiring Updates:
     - .specify/templates/plan-template.md: ✅ Compatible
-    - .specify/templates/spec-template.md: ✅ Compatible
+    - .specify/templates/spec-template.md: ⚠️ May need variant guidance
     - .specify/templates/tasks-template.md: ✅ Compatible
 
-  Follow-up TODOs: None
+  Follow-up TODOs:
+    - Update spec template to include variant requirements
   ============================================================================
 -->
 
 # Smart Humanoid — Constitution
 
-**Version 1.1.1 — December 2025**
+**Version 1.2.0 — December 2025**
 
 ---
 
@@ -290,15 +296,46 @@ We respect reader privacy and handle personal data responsibly. The platform col
 
 The platform adapts content based on reader background:
 
+**Reader Baseline Assumption:**
+- Readers are basic generative AI users (familiar with ChatGPT, Claude, etc.) but may NOT know AI theory
+- Content MUST explain AI concepts from first principles without assuming neural network or machine learning knowledge
+- No jargon without explanation; accessibility is paramount
+
 **Learning Paths:**
 - **Explorer**: Software background only, simulation-focused
-- **Builder**: Some embedded/hardware experience
-- **Engineer**: Full hardware access, sim-to-real focus
+- **Builder**: Some embedded/hardware experience (Arduino, Raspberry Pi)
+- **Engineer**: Full hardware access, sim-to-real focus, industrial robotics context
+
+**Content Variant Strategy:**
+
+Every chapter MUST be delivered as three separate variants following hackathon-aligned naming:
+- `chapter-N-[topic]-explorer.md`
+- `chapter-N-[topic]-builder.md`
+- `chapter-N-[topic]-engineer.md`
+
+**Variant Differentiation Rules:**
+
+1. **Same Core Narrative, Different Examples:**
+   - Explorer: Software analogies, simulation-only examples
+   - Builder: Arduino/Raspberry Pi context, basic hardware references
+   - Engineer: Industrial robotics context, real-world hardware examples
+
+2. **Different Content Depth:**
+   - Explorer: High-level conceptual understanding only
+   - Builder: Moderate technical detail
+   - Engineer: Full technical depth with advanced considerations
+
+3. **Shared Elements Across All Variants:**
+   - Same learning objectives
+   - Same "Try With AI" activity structure
+   - Same IEEE citations and references
+   - Same frontmatter metadata structure
 
 **Per-Chapter Features:**
 - Personalization: Adjust depth and examples based on user profile
 - Translation: Render content in Urdu (and future languages)
 - Difficulty indicators visible to user
+- Variant selection based on user onboarding profile
 
 ### XIV. Infrastructure Principles
 
@@ -979,4 +1016,4 @@ This constitution ensures we succeed.
 
 ---
 
-**Version**: 1.1.1 | **Ratified**: 2025-12-01 | **Last Amended**: 2025-12-01
+**Version**: 1.2.0 | **Ratified**: 2025-12-01 | **Last Amended**: 2025-12-02
