@@ -1,6 +1,6 @@
 ---
 title: "Chapter 2: ROS 2 Architecture & the Conceptual Model of Robot Control"
-sidebar_position: 4
+sidebar_position: 6
 safety: none
 prerequisites:
   - understanding of embodied intelligence concepts (from Chapter 1)
