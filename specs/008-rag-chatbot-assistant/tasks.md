@@ -34,6 +34,29 @@
   - Files: `.env.example`
   - Variables: OPENAI_API_KEY, QDRANT_URL, QDRANT_API_KEY, QDRANT_COLLECTION_NAME, DATABASE_URL, APP_ENV, LOG_LEVEL, CORS_ORIGINS
 
+- [ ] T003a [RED] [B] Write test for connectivity sanity-check utility
+  - File: `tests/unit/test_connectivity.py`
+  - Test: Verifies connection to OpenAI API, Qdrant, and Neon PostgreSQL
+  - Test: Returns structured status for each service
+  - Test: Handles connection failures gracefully
+  - FR: FR-ENV-002
+
+- [ ] T003b [GREEN] [B] Implement connectivity sanity-check script
+  - File: `backend/core/connectivity.py`
+  - Script: `scripts/check_connectivity.py`
+  - Method: check_all_services() -> ConnectivityReport
+  - Services: OpenAI (API key validation), Qdrant (collection ping), Neon (DB connection test)
+  - FR: FR-ENV-002
+  - Acceptance: T003a passes
+
+- [ ] T003c [B] Implement feature readiness gate
+  - File: `backend/core/readiness.py`
+  - Behavior: On startup, verify .env exists with real values (not placeholders)
+  - Behavior: Run connectivity checks before marking app as ready
+  - Behavior: Block /ready endpoint until all checks pass
+  - FR: FR-ENV-003
+  - Acceptance: App startup logs connectivity status, /ready returns appropriate status
+
 - [ ] T004 [B] Set up pytest configuration with asyncio mode
   - Files: `pytest.ini`, `conftest.py`
   - Acceptance: `pytest --collect-only` shows test collection
@@ -912,7 +935,7 @@ wait
 
 | Phase | Tasks | Priority | Story Coverage |
 |-------|-------|----------|----------------|
-| 0 | T001-T005 | P0 | Setup |
+| 0 | T001-T005 (+T003a-c) | P0 | Setup |
 | 1 | T006-T019 | P0 | Foundation |
 | 2 | T020-T031 | P0 | Schemas |
 | 3 | T032-T062 (+T041a-b, T045a-f) | P1 | US1 (Core RAG) |
@@ -926,9 +949,9 @@ wait
 | 11 | T112-T114 | P3 | Frontend |
 | 12 | T115-T120 (+T118a-b) | P2 | Operations |
 
-**Total Tasks**: 132
-**TDD Tasks (RED+GREEN pairs)**: 106 (53 test pairs)
-**Blocking Tasks**: 64
+**Total Tasks**: 135
+**TDD Tasks (RED+GREEN pairs)**: 108 (54 test pairs)
+**Blocking Tasks**: 67
 **Parallelizable Tasks**: 68
 
 ---

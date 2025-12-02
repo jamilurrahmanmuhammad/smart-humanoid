@@ -194,6 +194,12 @@ As an instructor or author, I want visibility into how learners use the chatbot 
 - **FR-029**: API errors MUST NOT expose sensitive system information to users.
 - **FR-030**: System MUST maintain graceful degradation under high load.
 
+**Environment Configuration**
+
+- **FR-ENV-001**: System MUST use `.env` file-based configuration derived from `.env.example` template for all external service credentials (OpenAI API, Qdrant vector database, Neon PostgreSQL database).
+- **FR-ENV-002**: System MUST provide a connectivity sanity-check that verifies successful connection to all three external services (OpenAI, Qdrant, Neon) before the application is considered operational.
+- **FR-ENV-003**: Feature MUST be marked as incomplete/non-operational until: (a) `.env` file exists with real credential values (not placeholders), and (b) the connectivity sanity-check passes for all external services.
+
 ### Non-Functional Requirements
 
 - **NFR-001**: First response token MUST begin within 5 seconds under normal conditions.
