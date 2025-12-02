@@ -1,0 +1,295 @@
+/**
+ * Smart Humanoid Platform - Custom Theme
+ *
+ * Design Reference:
+ * - Background: #0D0D0F (near-black)
+ * - Primary/Accent: #4ECFFE (neon cyan)
+ * - Typography: Inter or system sans-serif
+ *
+ * Follows Infima CSS framework conventions for Docusaurus.
+ */
+
+/* ============================================
+   Core Theme Variables
+   ============================================ */
+
+:root {
+  /* Primary color palette - Cyan accent */
+  --ifm-color-primary: #4ECFFE;
+  --ifm-color-primary-dark: #2bc4fe;
+  --ifm-color-primary-darker: #17befe;
+  --ifm-color-primary-darkest: #049dd4;
+  --ifm-color-primary-light: #71d6fe;
+  --ifm-color-primary-lighter: #85dbfe;
+  --ifm-color-primary-lightest: #b8eaff;
+
+  /* Background colors */
+  --ifm-background-color: #0D0D0F;
+  --ifm-background-surface-color: #141417;
+
+  /* Typography */
+  --ifm-font-family-base: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --ifm-font-family-monospace: 'JetBrains Mono', 'Fira Code', Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
+  --ifm-font-size-base: 100%;
+  --ifm-line-height-base: 1.65;
+  --ifm-heading-font-weight: 700;
+
+  /* Navbar */
+  --ifm-navbar-background-color: transparent;
+  --ifm-navbar-height: 3.75rem;
+  --ifm-navbar-padding-horizontal: 1rem;
+  --ifm-navbar-padding-vertical: 0.5rem;
+  --ifm-navbar-shadow: none;
+
+  /* Spacing */
+  --ifm-spacing-horizontal: 1rem;
+  --ifm-spacing-vertical: 1rem;
+  --ifm-global-radius: 0.4rem;
+
+  /* Motion */
+  --ifm-transition-fast: 200ms;
+  --ifm-transition-slow: 400ms;
+
+  /* Code blocks */
+  --ifm-code-font-size: 95%;
+  --docusaurus-highlighted-code-line-bg: rgba(78, 207, 254, 0.15);
+
+  /* Footer */
+  --ifm-footer-background-color: #0D0D0F;
+  --ifm-footer-color: rgba(255, 255, 255, 0.7);
+  --ifm-footer-link-color: var(--ifm-color-primary);
+
+  /* Sidebar */
+  --ifm-menu-color: rgba(255, 255, 255, 0.8);
+  --ifm-menu-color-active: var(--ifm-color-primary);
+  --ifm-menu-color-background-active: rgba(78, 207, 254, 0.1);
+}
+
+/* Apply background color to html and body */
+html,
+body {
+  background-color: var(--ifm-background-color);
+}
+
+/* Dark theme overrides (default theme) */
+[data-theme='dark'] {
+  --ifm-background-color: #0D0D0F;
+  --ifm-background-surface-color: #141417;
+  --ifm-color-primary: #4ECFFE;
+  --ifm-color-primary-dark: #2bc4fe;
+  --ifm-color-primary-darker: #17befe;
+  --ifm-color-primary-darkest: #049dd4;
+  --ifm-color-primary-light: #71d6fe;
+  --ifm-color-primary-lighter: #85dbfe;
+  --ifm-color-primary-lightest: #b8eaff;
+
+  --ifm-font-color-base: rgba(255, 255, 255, 0.9);
+  --ifm-font-color-secondary: rgba(255, 255, 255, 0.7);
+
+  --docusaurus-highlighted-code-line-bg: rgba(78, 207, 254, 0.2);
+}
+
+/* ============================================
+   Navbar Styles
+   ============================================ */
+
+.navbar {
+  background-color: transparent;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.navbar--fixed-top {
+  background-color: rgba(13, 13, 15, 0.85);
+}
+
+.navbar__title {
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.navbar__link {
+  font-weight: 500;
+}
+
+.navbar__link:hover {
+  color: var(--ifm-color-primary);
+}
+
+/* ============================================
+   Hero Section Styles
+   ============================================ */
+
+.hero {
+  background-color: var(--ifm-background-color);
+  padding: 4rem 0;
+}
+
+.hero__title {
+  font-size: 3rem;
+  font-weight: 800;
+  line-height: 1.2;
+}
+
+.hero__subtitle {
+  font-size: 1.25rem;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+/* ============================================
+   Button Styles
+   ============================================ */
+
+.button--primary {
+  background-color: var(--ifm-color-primary);
+  border-color: var(--ifm-color-primary);
+  color: #0D0D0F;
+  font-weight: 600;
+}
+
+.button--primary:hover {
+  background-color: var(--ifm-color-primary-light);
+  border-color: var(--ifm-color-primary-light);
+  color: #0D0D0F;
+}
+
+.button--secondary {
+  background-color: transparent;
+  border-color: var(--ifm-color-primary);
+  color: var(--ifm-color-primary);
+}
+
+.button--secondary:hover {
+  background-color: rgba(78, 207, 254, 0.1);
+}
+
+/* Disabled/placeholder button styles */
+.button--disabled,
+.button[disabled] {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ============================================
+   Documentation Styles
+   ============================================ */
+
+.markdown h1,
+.markdown h2,
+.markdown h3 {
+  font-weight: 700;
+}
+
+.markdown a {
+  color: var(--ifm-color-primary);
+}
+
+.markdown a:hover {
+  text-decoration: underline;
+}
+
+/* Code blocks */
+.prism-code {
+  border-radius: var(--ifm-global-radius);
+}
+
+/* ============================================
+   Footer Styles
+   ============================================ */
+
+.footer {
+  background-color: var(--ifm-footer-background-color);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.footer__title {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.footer__link-item {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.footer__link-item:hover {
+  color: var(--ifm-color-primary);
+}
+
+/* ============================================
+   Accessibility
+   ============================================ */
+
+/* Visible focus indicators */
+*:focus-visible {
+  outline: 2px solid var(--ifm-color-primary);
+  outline-offset: 2px;
+}
+
+/* Skip to content link */
+.skip-to-content {
+  position: absolute;
+  top: -100px;
+  left: 0;
+  background: var(--ifm-color-primary);
+  color: #0D0D0F;
+  padding: 0.5rem 1rem;
+  z-index: 1000;
+  transition: top 0.2s;
+}
+
+.skip-to-content:focus {
+  top: 0;
+}
+
+/* Respect user motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ============================================
+   RTL Support (for future Urdu translation)
+   ============================================ */
+
+[dir='rtl'] {
+  direction: rtl;
+  text-align: right;
+}
+
+[dir='rtl'] .navbar__items {
+  flex-direction: row-reverse;
+}
+
+[dir='rtl'] code,
+[dir='rtl'] pre {
+  direction: ltr;
+  text-align: left;
+}
+
+/* ============================================
+   Responsive Utilities
+   ============================================ */
+
+@media (max-width: 996px) {
+  .hero__title {
+    font-size: 2rem;
+  }
+
+  .hero__subtitle {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .hero {
+    padding: 2rem 0;
+  }
+
+  .hero__title {
+    font-size: 1.75rem;
+  }
+}

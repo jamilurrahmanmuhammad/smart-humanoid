@@ -24,13 +24,13 @@
 
 **Purpose**: Project initialization, Docusaurus bootstrap, and testing infrastructure
 
-- [ ] T001 Verify Node.js >= 18 is installed via CLI
-- [ ] T002 Initialize Docusaurus 3.x with TypeScript at repository root: `npx create-docusaurus@latest . classic --typescript`
-- [ ] T003 [P] Remove default blog content (delete `/blog/` directory)
-- [ ] T004 [P] Configure `tsconfig.json` for strict TypeScript
-- [ ] T005 Install Playwright as dev dependency: `npm install -D @playwright/test`
-- [ ] T006 [P] Create `playwright.config.ts` with webServer config for localhost:3000
-- [ ] T007 [P] Create `tests/e2e/` directory structure for Playwright tests
+- [x] T001 Verify Node.js >= 18 is installed via CLI
+- [x] T002 Initialize Docusaurus 3.x with TypeScript at repository root: `npx create-docusaurus@latest . classic --typescript`
+- [x] T003 [P] Remove default blog content (delete `/blog/` directory)
+- [x] T004 [P] Configure `tsconfig.json` for strict TypeScript
+- [x] T005 Install Playwright as dev dependency: `npm install -D @playwright/test`
+- [x] T006 [P] Create `playwright.config.ts` with webServer config for localhost:3000
+- [x] T007 [P] Create `tests/e2e/` directory structure for Playwright tests
 
 ---
 
@@ -40,13 +40,13 @@
 
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete
 
-- [ ] T008 Configure `docusaurus.config.ts` with project metadata: title "Smart Humanoid", tagline "Build robots that understand the physical world"
-- [ ] T009 [P] Configure dark mode as default, disable theme switch toggle in `docusaurus.config.ts`
-- [ ] T010 [P] Create `src/css/custom.css` with CSS custom properties: `--ifm-background-color: #0D0D0F`, `--ifm-color-primary: #4ECFFE`
-- [ ] T011 [P] Configure full Infima token system in `src/css/custom.css` per research.md
-- [ ] T012 [P] Create `.env.example` with all feature flags disabled (ENABLE_AUTH, ENABLE_LLM, ENABLE_VECTOR_SEARCH, ENABLE_ANALYTICS)
-- [ ] T013 [P] Create `src/config/features.ts` reading feature flags from environment
-- [ ] T014 Verify `npm run build` succeeds with zero warnings
+- [x] T008 Configure `docusaurus.config.ts` with project metadata: title "Smart Humanoid", tagline "Build robots that understand the physical world"
+- [x] T009 [P] Configure dark mode as default, disable theme switch toggle in `docusaurus.config.ts`
+- [x] T010 [P] Create `src/css/custom.css` with CSS custom properties: `--ifm-background-color: #0D0D0F`, `--ifm-color-primary: #4ECFFE`
+- [x] T011 [P] Configure full Infima token system in `src/css/custom.css` per research.md
+- [x] T012 [P] Create `.env.example` with all feature flags disabled (ENABLE_AUTH, ENABLE_LLM, ENABLE_VECTOR_SEARCH, ENABLE_ANALYTICS)
+- [x] T013 [P] Create `src/config/features.ts` reading feature flags from environment
+- [x] T014 Verify `npm run build` succeeds with zero warnings
 
 **Checkpoint**: Foundation ready - Docusaurus builds with dark theme, user story implementation can now begin
 
@@ -60,30 +60,30 @@
 
 ### Tests for User Story 1 (TDD - Write FIRST, must FAIL) ⚠️
 
-- [ ] T015 [P] [US1] E2E test: homepage loads with dark background color in `tests/e2e/homepage.spec.ts`
-- [ ] T016 [P] [US1] E2E test: hero section displays platform label "SMART HUMANOID" in `tests/e2e/homepage.spec.ts`
-- [ ] T017 [P] [US1] E2E test: hero headline contains "understand" with cyan highlight in `tests/e2e/homepage.spec.ts`
-- [ ] T018 [P] [US1] E2E test: two CTA buttons ("Get Started", "Browse Content") are present and keyboard accessible in `tests/e2e/homepage.spec.ts`
-- [ ] T019 [P] [US1] E2E test: hero section occupies 50-60% viewport height on desktop (1920x1080) in `tests/e2e/homepage.spec.ts`
-- [ ] T020 [P] [US1] E2E test: diagram placeholder visible on right side of hero in `tests/e2e/homepage.spec.ts`
-- [ ] T021 [US1] Run tests - verify ALL tests FAIL (RED phase)
+- [x] T015 [P] [US1] E2E test: homepage loads with dark background color in `tests/e2e/homepage.spec.ts`
+- [x] T016 [P] [US1] E2E test: hero section displays platform label "SMART HUMANOID" in `tests/e2e/homepage.spec.ts`
+- [x] T017 [P] [US1] E2E test: hero headline contains "understand" with cyan highlight in `tests/e2e/homepage.spec.ts`
+- [x] T018 [P] [US1] E2E test: two CTA buttons ("Get Started", "Browse Content") are present and keyboard accessible in `tests/e2e/homepage.spec.ts`
+- [x] T019 [P] [US1] E2E test: hero section occupies 50-60% viewport height on desktop (1920x1080) in `tests/e2e/homepage.spec.ts`
+- [x] T020 [P] [US1] E2E test: diagram placeholder visible on right side of hero in `tests/e2e/homepage.spec.ts`
+- [x] T021 [US1] Run tests - verify ALL tests FAIL (RED phase)
 
 ### Implementation for User Story 1 (GREEN phase)
 
-- [ ] T022 [P] [US1] Create `src/components/Hero/index.tsx` with platform label, headline, subheading, and CTA buttons
-- [ ] T023 [P] [US1] Create `src/components/Hero/styles.module.css` with flex layout, typography, and spacing
-- [ ] T024 [US1] Add animated underline CSS keyframes for "understand" highlight in `src/components/Hero/styles.module.css`
-- [ ] T025 [US1] Add `prefers-reduced-motion` media query to disable animation for accessibility in `src/components/Hero/styles.module.css`
-- [ ] T026 [US1] Create diagram placeholder component in `src/components/Hero/DiagramPlaceholder.tsx`
-- [ ] T027 [US1] Create `src/pages/index.tsx` using Hero component as above-the-fold content
-- [ ] T028 [US1] Remove default Docusaurus homepage template content from `src/pages/index.tsx`
-- [ ] T029 [US1] Add ARIA labels and roles to Hero component for accessibility
-- [ ] T030 [US1] Run tests - verify ALL tests PASS (GREEN phase)
+- [x] T022 [P] [US1] Create `src/components/Hero/index.tsx` with platform label, headline, subheading, and CTA buttons
+- [x] T023 [P] [US1] Create `src/components/Hero/styles.module.css` with flex layout, typography, and spacing
+- [x] T024 [US1] Add animated underline CSS keyframes for "understand" highlight in `src/components/Hero/styles.module.css`
+- [x] T025 [US1] Add `prefers-reduced-motion` media query to disable animation for accessibility in `src/components/Hero/styles.module.css`
+- [x] T026 [US1] Create diagram placeholder component in `src/components/Hero/DiagramPlaceholder.tsx` (integrated into Hero component)
+- [x] T027 [US1] Create `src/pages/index.tsx` using Hero component as above-the-fold content
+- [x] T028 [US1] Remove default Docusaurus homepage template content from `src/pages/index.tsx`
+- [x] T029 [US1] Add ARIA labels and roles to Hero component for accessibility
+- [x] T030 [US1] Run tests - verify ALL tests PASS (GREEN phase)
 
 ### Refactor for User Story 1 (REFACTOR phase)
 
-- [ ] T031 [US1] Review Hero component code for DRY principles and clean up any duplication
-- [ ] T032 [US1] Validate color contrast meets WCAG 2.1 AA (4.5:1 minimum) using MCP Playwright
+- [x] T031 [US1] Review Hero component code for DRY principles and clean up any duplication
+- [x] T032 [US1] Validate color contrast meets WCAG 2.1 AA (4.5:1 minimum) using MCP Playwright
 
 **Checkpoint**: User Story 1 complete - Homepage displays dark-themed hero section with all elements
 

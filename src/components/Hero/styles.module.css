@@ -1,0 +1,257 @@
+/**
+ * Hero Component Styles - User Story 1
+ *
+ * Implements the dark-themed hero section with:
+ * - Flex layout (left text, right diagram)
+ * - 50-60% viewport height on desktop
+ * - Cyan accent color for highlights
+ * - Animated underline effect
+ * - Accessibility: reduced motion support
+ */
+
+.hero {
+  min-height: 55vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  background-color: var(--ifm-background-color);
+}
+
+.heroContent {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 1400px;
+  width: 100%;
+  gap: 4rem;
+}
+
+/* Left side: Text content */
+.heroText {
+  flex: 1;
+  max-width: 600px;
+}
+
+/* Platform label */
+.platformLabel {
+  display: inline-block;
+  font-size: 0.875rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ifm-color-primary);
+  margin-bottom: 1.5rem;
+}
+
+/* Main headline */
+.headline {
+  font-size: 3rem;
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--ifm-font-color-base);
+  margin: 0 0 1.5rem 0;
+}
+
+/* Highlighted word with animated underline */
+.highlight {
+  color: rgb(78, 207, 254);
+  position: relative;
+  display: inline-block;
+}
+
+.highlight::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background-color: rgb(78, 207, 254);
+  transform: scaleX(0);
+  transform-origin: left;
+  animation: underlineGrow 0.8s ease-out 0.5s forwards;
+}
+
+@keyframes underlineGrow {
+  to {
+    transform: scaleX(1);
+  }
+}
+
+/* Respect reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  .highlight::after {
+    animation: none;
+    transform: scaleX(1);
+  }
+}
+
+/* Subheading */
+.subheading {
+  font-size: 1.125rem;
+  line-height: 1.7;
+  color: var(--ifm-font-color-secondary);
+  margin: 0 0 2rem 0;
+}
+
+/* CTA Buttons container */
+.buttons {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+/* Primary button */
+.buttonPrimary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.875rem 1.75rem;
+  font-size: 1rem;
+  font-weight: 600;
+  text-decoration: none;
+  border-radius: 8px;
+  background-color: var(--ifm-color-primary);
+  color: var(--ifm-background-color);
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.buttonPrimary:hover {
+  background-color: var(--color-cyan-light);
+  color: var(--ifm-background-color);
+  text-decoration: none;
+  transform: translateY(-2px);
+}
+
+.buttonPrimary:focus {
+  outline: 2px solid var(--ifm-color-primary);
+  outline-offset: 2px;
+}
+
+/* Secondary button */
+.buttonSecondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.875rem 1.75rem;
+  font-size: 1rem;
+  font-weight: 600;
+  text-decoration: none;
+  border-radius: 8px;
+  background-color: transparent;
+  color: var(--ifm-font-color-base);
+  border: 2px solid var(--ifm-color-emphasis-300);
+  transition: border-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+
+.buttonSecondary:hover {
+  border-color: var(--ifm-color-primary);
+  color: var(--ifm-color-primary);
+  text-decoration: none;
+  transform: translateY(-2px);
+}
+
+.buttonSecondary:focus {
+  outline: 2px solid var(--ifm-color-primary);
+  outline-offset: 2px;
+}
+
+/* Right side: Diagram placeholder */
+.diagramPlaceholder {
+  flex: 1;
+  max-width: 500px;
+  min-height: 350px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px dashed var(--ifm-color-emphasis-300);
+  border-radius: 16px;
+  background-color: var(--ifm-background-surface-color);
+}
+
+.placeholderContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--ifm-font-color-secondary);
+}
+
+.placeholderIcon {
+  font-size: 3rem;
+  opacity: 0.6;
+}
+
+.placeholderText {
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.placeholderSubtext {
+  font-size: 0.875rem;
+  opacity: 0.6;
+}
+
+/* Responsive: Tablet */
+@media (max-width: 996px) {
+  .heroContent {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .heroText {
+    max-width: 100%;
+  }
+
+  .buttons {
+    justify-content: center;
+  }
+
+  .diagramPlaceholder {
+    max-width: 100%;
+    width: 100%;
+  }
+}
+
+/* Responsive: Mobile */
+@media (max-width: 576px) {
+  .hero {
+    padding: 1.5rem;
+    min-height: auto;
+  }
+
+  .headline {
+    font-size: 2rem;
+  }
+
+  .buttons {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .buttonPrimary,
+  .buttonSecondary {
+    width: 100%;
+  }
+
+  .diagramPlaceholder {
+    min-height: 250px;
+  }
+}
+
+/* RTL Support */
+[dir='rtl'] .highlight::after {
+  transform-origin: right;
+}
+
+[dir='rtl'] .heroContent {
+  flex-direction: row-reverse;
+}
+
+@media (max-width: 996px) {
+  [dir='rtl'] .heroContent {
+    flex-direction: column;
+  }
+}
