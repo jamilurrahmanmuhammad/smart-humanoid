@@ -18,9 +18,21 @@ By the end of this module, you will be able to:
 
 ## Chapters
 
-Chapters will be added here as the curriculum develops.
+### Chapter 1: Foundations of Physical AI & Embodied Intelligence
+
+This chapter establishes the conceptual foundation of Physical AI, introducing embodied intelligence, the perception-action loop, and why robots must understand physics.
+
+**Choose your learning path:**
+
+| Path | Level | Best For |
+|------|-------|----------|
+| [Explorer](./chapter-1-physical-ai-foundations-explorer) | Beginner | Software developers, simulation-focused learners |
+| [Builder](./chapter-1-physical-ai-foundations-builder) | Intermediate | Makers, Arduino/Raspberry Pi enthusiasts |
+| [Engineer](./chapter-1-physical-ai-foundations-engineer) | Advanced | Robotics professionals, industrial applications |
+
+*More chapters coming soon...*
 
 ## Prerequisites
 
-- Basic programming knowledge (Python recommended)
-- Understanding of fundamental robotics concepts
+- Familiarity with generative AI tools (ChatGPT, Claude, etc.)
+- High-level understanding of physics concepts (no equations required)
