@@ -116,6 +116,61 @@ body {
   color: var(--ifm-color-primary);
 }
 
+/* Disabled navbar items (Coming Soon placeholders) */
+.navbar__link--disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+  position: relative;
+}
+
+.navbar__link--disabled:hover {
+  color: inherit;
+}
+
+/* Tooltip for disabled items */
+.navbar__link--disabled[title]:hover::after {
+  content: attr(title);
+  position: absolute;
+  bottom: -30px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--ifm-background-surface-color);
+  color: var(--ifm-font-color-base);
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  white-space: nowrap;
+  z-index: 100;
+}
+
+/* Search box placeholder styling */
+.navbar__search-placeholder {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.4rem 0.75rem;
+  background-color: var(--ifm-background-surface-color);
+  border: 1px solid var(--ifm-color-emphasis-300);
+  border-radius: 6px;
+  color: var(--ifm-font-color-secondary);
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: border-color 0.2s ease;
+}
+
+.navbar__search-placeholder:hover {
+  border-color: var(--ifm-color-primary);
+}
+
+.navbar__search-placeholder .search-icon {
+  font-size: 0.875rem;
+}
+
+.navbar__search-placeholder .search-text {
+  font-weight: 400;
+}
+
 /* ============================================
    Hero Section Styles
    ============================================ */

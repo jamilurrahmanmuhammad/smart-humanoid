@@ -65,16 +65,37 @@ const config: Config = {
         src: 'img/logo.svg',
       },
       items: [
+        // Learn Free - links to documentation
         {
           type: 'docSidebar',
           sidebarId: 'tutorialSidebar',
           position: 'left',
-          label: 'Tutorial',
+          label: 'Learn Free',
         },
+        // Labs - disabled placeholder (Coming Soon)
         {
-          href: 'https://github.com/facebook/docusaurus',
+          type: 'html',
+          position: 'left',
+          value: '<span class="navbar__item navbar__link navbar__link--disabled" aria-label="Labs - Coming Soon" title="Coming Soon" aria-disabled="true">Labs</span>',
+        },
+        // Personalize - disabled placeholder (Coming Soon)
+        {
+          type: 'html',
+          position: 'left',
+          value: '<span class="navbar__item navbar__link navbar__link--disabled" aria-label="Personalize - Coming Soon" title="Coming Soon" aria-disabled="true">Personalize</span>',
+        },
+        // Search placeholder (visible placeholder until search is implemented)
+        {
+          type: 'html',
+          position: 'right',
+          value: '<div class="navbar__search-placeholder" aria-label="Search placeholder"><span class="search-icon">🔍</span><span class="search-text">Search</span></div>',
+        },
+        // GitHub repository link
+        {
+          href: 'https://github.com/jamilurrahmanmuhammad/smart-humanoid',
           label: 'GitHub',
           position: 'right',
+          'aria-label': 'GitHub repository',
         },
       ],
     },

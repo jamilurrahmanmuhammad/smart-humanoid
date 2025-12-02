@@ -97,31 +97,31 @@
 
 ### Tests for User Story 2 (TDD - Write FIRST, must FAIL) ⚠️
 
-- [ ] T033 [P] [US2] E2E test: navbar displays "Learn Free" menu item linking to /docs/intro in `tests/e2e/navigation.spec.ts`
-- [ ] T034 [P] [US2] E2E test: navbar displays "Labs" menu item (disabled placeholder) in `tests/e2e/navigation.spec.ts`
-- [ ] T035 [P] [US2] E2E test: navbar displays "Personalize" menu item (disabled placeholder) in `tests/e2e/navigation.spec.ts`
-- [ ] T036 [P] [US2] E2E test: navbar displays search box placeholder on right side in `tests/e2e/navigation.spec.ts`
-- [ ] T037 [P] [US2] E2E test: navbar displays GitHub repository link icon on far right in `tests/e2e/navigation.spec.ts`
-- [ ] T038 [P] [US2] E2E test: navbar is transparent over dark background in `tests/e2e/navigation.spec.ts`
-- [ ] T039 [P] [US2] E2E test: menu items show hover feedback in `tests/e2e/navigation.spec.ts`
-- [ ] T040 [US2] Run tests - verify ALL tests FAIL (RED phase)
+- [x] T033 [P] [US2] E2E test: navbar displays "Learn Free" menu item linking to /docs/intro in `tests/e2e/navigation.spec.ts`
+- [x] T034 [P] [US2] E2E test: navbar displays "Labs" menu item (disabled placeholder) in `tests/e2e/navigation.spec.ts`
+- [x] T035 [P] [US2] E2E test: navbar displays "Personalize" menu item (disabled placeholder) in `tests/e2e/navigation.spec.ts`
+- [x] T036 [P] [US2] E2E test: navbar displays search box placeholder on right side in `tests/e2e/navigation.spec.ts`
+- [x] T037 [P] [US2] E2E test: navbar displays GitHub repository link icon on far right in `tests/e2e/navigation.spec.ts`
+- [x] T038 [P] [US2] E2E test: navbar is transparent over dark background in `tests/e2e/navigation.spec.ts`
+- [x] T039 [P] [US2] E2E test: menu items show hover feedback in `tests/e2e/navigation.spec.ts`
+- [x] T040 [US2] Run tests - verify ALL tests FAIL (RED phase) - 6/7 fail as expected (transparent navbar already passing)
 
 ### Implementation for User Story 2 (GREEN phase)
 
-- [ ] T041 [US2] Configure navbar items in `docusaurus.config.ts`: "Learn Free" -> /docs/intro
-- [ ] T042 [P] [US2] Create `src/components/placeholders/PersonalizeButton.tsx` with disabled state and "Coming Soon" tooltip
-- [ ] T043 [P] [US2] Create `src/components/placeholders/LabsButton.tsx` with disabled state and "Coming Soon" tooltip
-- [ ] T044 [US2] Add navbar items for Labs and Personalize placeholders in `docusaurus.config.ts`
-- [ ] T045 [US2] Configure search box placeholder in navbar in `docusaurus.config.ts`
-- [ ] T046 [US2] Add GitHub repository link icon to navbar in `docusaurus.config.ts`
-- [ ] T047 [US2] Style navbar transparent background in `src/css/custom.css`: `--ifm-navbar-background-color: transparent`
-- [ ] T048 [US2] Add ARIA labels to placeholder buttons for accessibility ("Coming Soon" announcement)
-- [ ] T049 [US2] Run tests - verify ALL tests PASS (GREEN phase)
+- [x] T041 [US2] Configure navbar items in `docusaurus.config.ts`: "Learn Free" -> /docs/intro
+- [x] T042 [P] [US2] Create `src/components/placeholders/PersonalizeButton.tsx` with disabled state and "Coming Soon" tooltip (implemented via HTML navbar item)
+- [x] T043 [P] [US2] Create `src/components/placeholders/LabsButton.tsx` with disabled state and "Coming Soon" tooltip (implemented via HTML navbar item)
+- [x] T044 [US2] Add navbar items for Labs and Personalize placeholders in `docusaurus.config.ts`
+- [x] T045 [US2] Configure search box placeholder in navbar in `docusaurus.config.ts`
+- [x] T046 [US2] Add GitHub repository link icon to navbar in `docusaurus.config.ts`
+- [x] T047 [US2] Style navbar transparent background in `src/css/custom.css`: `--ifm-navbar-background-color: transparent` (already complete from Phase 2)
+- [x] T048 [US2] Add ARIA labels to placeholder buttons for accessibility ("Coming Soon" announcement)
+- [x] T049 [US2] Run tests - verify ALL tests PASS (GREEN phase) - 13/13 tests pass
 
 ### Refactor for User Story 2 (REFACTOR phase)
 
-- [ ] T050 [US2] Extract shared placeholder button logic to `src/components/placeholders/PlaceholderButton.tsx` if duplicated
-- [ ] T051 [US2] Verify all 5 navbar elements keyboard accessible using MCP Playwright
+- [x] T050 [US2] Extract shared placeholder button logic to `src/components/placeholders/PlaceholderButton.tsx` if duplicated (N/A - used HTML navbar items, no duplication)
+- [x] T051 [US2] Verify all 5 navbar elements keyboard accessible using MCP Playwright (4 interactive elements focusable, 2 disabled placeholders visible with ARIA labels)
 
 **Checkpoint**: User Story 2 complete - Full navigation visible with all 5 elements
 
