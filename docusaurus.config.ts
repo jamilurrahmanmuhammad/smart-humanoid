@@ -1,8 +1,12 @@
 import {themes as prismThemes} from 'prism-react-renderer';
 import type {Config} from '@docusaurus/types';
 import type * as Preset from '@docusaurus/preset-classic';
+import {getConfig} from './config-helpers';
 
 // This runs in Node.js - Don't use client-side code here (browser APIs, JSX...)
+
+// Get URL configuration from environment variables (with defaults for local dev)
+const {url, baseUrl} = getConfig();
 
 const config: Config = {
   title: 'Smart Humanoid',
@@ -14,11 +18,11 @@ const config: Config = {
     v4: true, // Improve compatibility with the upcoming Docusaurus v4
   },
 
-  // Set the production url of your site here
-  url: 'https://jamilurrahmanmuhammad.github.io',
-  // Set the /<baseUrl>/ pathname under which your site is served
-  // For GitHub pages deployment, it is often '/<projectName>/'
-  baseUrl: '/smart-humanoid/',
+  // URL configuration from environment variables (see config-helpers.ts)
+  // Defaults: url='http://localhost:3000', baseUrl='/'
+  // Override with: SITE_URL and BASE_URL environment variables
+  url,
+  baseUrl,
 
   // GitHub pages deployment config.
   organizationName: 'jamilurrahmanmuhammad', // GitHub org/user name

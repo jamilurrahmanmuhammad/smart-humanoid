@@ -212,6 +212,8 @@ See `.specify/memory/constitution.md` for code quality, testing, performance, se
 ## Active Technologies
 - Python 3.11+ + FastAPI 0.109+, OpenAI Agents SDK, Qdrant Client, SQLAlchemy 2.0, Pydantic 2.x (008-rag-chatbot-assistant)
 - Neon Serverless Postgres (sessions/metadata), Qdrant Cloud (vectors) (008-rag-chatbot-assistant)
+- TypeScript 5.6+ / Node.js 20+ + Docusaurus 3.9.2, React 19, existing config-helpers.ts from feature 009 (010-zero-config-deployment)
+- N/A (static site generation) (010-zero-config-deployment)
 
 ## Recent Changes
 - 008-rag-chatbot-assistant: Added Python 3.11+ + FastAPI 0.109+, OpenAI Agents SDK, Qdrant Client, SQLAlchemy 2.0, Pydantic 2.x
