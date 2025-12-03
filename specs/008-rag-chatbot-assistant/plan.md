@@ -15,6 +15,7 @@ Implement a RAG-powered chatbot for the Smart Humanoid textbook that provides ci
 - Citation-grounded responses (max 5 citations)
 - Safety disclaimers for physical robotics content
 - Message-based 24-hour retention policy
+- **Page content context for vague contextual queries** (Phase 7 - NEW)
 
 ---
 
@@ -213,6 +214,98 @@ scripts/
 3. Analytics event logging
 4. Monitoring/observability
 
+### Phase 7: Page Content Context (NEW - 2025-12-03)
+1. Backend: Accept page content in WebSocket context message
+2. Backend: Detect vague contextual queries
+3. Backend: Inject page content into RAG context
+4. Frontend: Extract and send page content on connect/navigation
+
+---
+
+## Phase 7: Page Content Context (NEW)
+
+**Date Added**: 2025-12-03
+**FR References**: FR-031, FR-032, FR-033, FR-034
+
+### Summary
+
+Enable the chatbot to answer vague contextual queries like "explain this page" by having the frontend send the current page's content to the backend as supplementary context.
+
+### Architecture
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                     Docusaurus Frontend                          │
+│  ┌─────────────────────────────────────────────────────────────┐│
+│  │ Page Content Extractor (new)                                 ││
+│  │ - Extract article content on page load/navigation           ││
+│  │ - Truncate to 8000 chars                                     ││
+│  │ - Send via WebSocket context message                         ││
+│  └───────────────────────────┬─────────────────────────────────┘│
+└──────────────────────────────┼──────────────────────────────────┘
+                               │ WebSocket { type: "context", page_content: "..." }
+                               ▼
+┌─────────────────────────────────────────────────────────────────┐
+│                     FastAPI Backend                              │
+│  ┌─────────────────────────────────────────────────────────────┐│
+│  │ WebSocket Handler (updated)                                  ││
+│  │ - Store page_content in session state                       ││
+│  │ - Detect vague contextual queries                           ││
+│  │ - Inject page_content into RAG context                      ││
+│  └─────────────────────────────────────────────────────────────┘│
+└─────────────────────────────────────────────────────────────────┘
+```
+
+### Implementation Tasks
+
+#### 7.1 Backend: Accept page content in context message
+- **File**: `backend/api/routes/chat.py`
+- Update WebSocket handler to accept `page_content` field in context messages
+- Store page content in session state (memory, not DB)
+- Limit to 8000 characters (FR-034)
+
+#### 7.2 Backend: Detect vague contextual queries
+- **File**: `backend/services/rag.py` (new helper function)
+- Detect queries like "explain this page", "what is this about", "summarize this"
+- Use simple keyword matching (not ML classifier)
+- Return boolean indicating if page context should be used
+
+#### 7.3 Backend: Inject page content into RAG context
+- **File**: `backend/api/routes/chat.py`
+- When vague query detected AND page content available:
+  - Prepend page content to RAG context
+  - Skip vector search (or use page content as primary context)
+  - Format: `[Current Page Content]\n{page_content}\n\n[RAG Results]\n{rag_context}`
+
+#### 7.4 Frontend: Extract page content
+- **File**: `src/components/ChatWidget/useChat.ts`
+- Add `pageContent` to context message
+- Extract from `<article>` element or main content area
+- Truncate to 8000 chars
+
+#### 7.5 Frontend: Send content on connect/navigation
+- **File**: `src/theme/Root.tsx`
+- Extract page content when chat opens or page changes
+- Pass to ChatWidget/useChat
+- Send via existing context message mechanism
+
+### Test Cases
+
+1. **Unit**: Vague query detection returns true for "explain this page"
+2. **Unit**: Vague query detection returns false for "what is ROS 2?"
+3. **Integration**: WebSocket accepts page_content in context message
+4. **Integration**: Vague query with page content returns relevant response
+5. **E2E**: User asks "explain this page" on chapter page, gets content-aware response
+
+### Decisions
+
+| Decision | Rationale |
+|----------|-----------|
+| Extract `<article>` text only | Avoids nav/footer noise; Docusaurus uses `<article>` for main content |
+| 8000 char limit | ~2000 tokens, leaves room for RAG context and response |
+| Store in memory only | Session-scoped, no persistence needed |
+| Keyword-based detection | Simple, fast, sufficient for common patterns |
+
 ---
 
 ## Key Design Decisions
@@ -233,6 +326,10 @@ scripts/
 **Decision**: Keyword-based safety check with disclaimer injection
 **Rationale**: Low latency, high recall. Can be enhanced with classifier later. Covers FR-021 through FR-024.
 
+### 5. Page Content Context (NEW)
+**Decision**: Frontend extracts and sends page content via WebSocket context message
+**Rationale**: Enables answering vague queries like "explain this page" without requiring vector search. User requested this workflow.
+
 ---
 
 ## Test Strategy (TDD)
@@ -242,11 +339,13 @@ scripts/
 - `test_persona_adapter.py`: Verify prompt injection per persona
 - `test_safety_guardrails.py`: Verify safety keyword detection
 - `test_message_retention.py`: Verify TTL calculation
+- `test_vague_query_detection.py`: Verify contextual query detection (NEW)
 
 ### Integration Tests
 - `test_chat_api.py`: End-to-end chat flow
 - `test_websocket.py`: WebSocket connection and streaming
 - `test_vector_search.py`: Qdrant query with filters
+- `test_page_content_context.py`: Page content in context message (NEW)
 
 ### Contract Tests
 - `test_openapi_schema.py`: Validate responses against OpenAPI spec
@@ -264,6 +363,7 @@ scripts/
 | OpenAI rate limits | Medium | Medium | Request queuing, backoff |
 | Hallucination despite RAG | Low | High | Strict grounding prompt, citation verification |
 | Selection text too long | Low | Low | Frontend validation, clear error message |
+| Page content extraction fails | Low | Medium | Graceful fallback to vector search only |
 
 ---
 
@@ -300,11 +400,10 @@ scripts/
 ## Next Steps
 
 1. Run `/sp.tasks` to generate implementation tasks from this plan
-2. Begin TDD cycle: Write failing tests (RED) for Phase 1 foundation
+2. Begin TDD cycle: Write failing tests (RED) for Phase 7 tasks
 3. Implement to make tests pass (GREEN)
 4. Refactor while keeping tests green
-5. Continue through phases 2-6
-6. Create PR when feature complete
+5. Create PR when Phase 7 complete
 
 ---
 

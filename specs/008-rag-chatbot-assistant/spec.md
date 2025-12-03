@@ -69,6 +69,8 @@ As a learner reading a specific chapter, I want to ask questions that prioritize
 
 1. **Given** a learner on Chapter 2 (ROS 2 Architecture), **When** they ask "What are nodes?", **Then** the response primarily cites Chapter 2 content before referencing other chapters.
 2. **Given** page-scoped mode is enabled, **When** the current chapter doesn't cover the topic, **Then** the system indicates this and offers to search the full book.
+3. **Given** a learner on any chapter page, **When** they ask a vague contextual question like "explain this page" or "summarize the current topic", **Then** the system uses the actual page content as context to provide a relevant response.
+4. **Given** the chat widget is open on a chapter page, **When** the session starts or page changes, **Then** the frontend automatically sends the visible page content (or key metadata) to the backend to enable page-aware responses.
 
 ---
 
@@ -161,6 +163,13 @@ As an instructor or author, I want visibility into how learners use the chatbot 
 - **FR-012**: Conversation history MUST be preserved within a user session.
 - **FR-013**: When context window limits are reached, earlier turns MUST be summarized rather than truncated.
 - **FR-014**: Cross-chapter queries MUST stitch relevant content coherently.
+
+**Page Content Context**
+
+- **FR-031**: Frontend MUST extract and send the current page's main content (article text) to the backend when the chat widget opens or when the user navigates to a different page.
+- **FR-032**: Backend MUST accept page content context via the WebSocket `context` message type and use it as supplementary context for user queries.
+- **FR-033**: When a user asks a vague contextual query (e.g., "explain this page", "what is this about") and page content is available, system MUST use the page content as context to generate a relevant response.
+- **FR-034**: Page content context MUST be limited to a reasonable size (e.g., first 8000 characters) to manage context window usage.
 
 **Persona Adaptation (Constitution Section XIII)**
 

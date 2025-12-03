@@ -492,3 +492,137 @@ class TestRAGResult:
             assert result.context == "Retrieved context"
             assert len(result.citations) == 1
             assert result.is_out_of_scope is False
+
+
+class TestSelectionQuery:
+    """Tests for selection-scoped query handling (T087-T088b)."""
+
+    @pytest.mark.unit
+    @pytest.mark.asyncio
+    async def test_selection_query_uses_selected_text_as_context(self) -> None:
+        """selection query should use only selected_text as context (FR-018, FR-019)."""
+        env_vars = {
+            "OPENAI_API_KEY": "sk-test-key",
+            "QDRANT_URL": "https://test.qdrant.io",
+            "QDRANT_API_KEY": "qdrant-key",
+            "DATABASE_URL": "postgresql+asyncpg://user:pass@localhost/db",
+        }
+        with patch.dict(os.environ, env_vars, clear=False):
+            from services.rag import RAGPipeline
+
+            pipeline = RAGPipeline()
+
+            # Mock embedding service - should NOT be called for selection queries
+            pipeline._embedding_service = MagicMock()
+            pipeline._embedding_service.embed = AsyncMock(return_value=[0.1] * 1536)
+
+            # Mock vector store - should NOT be called for selection queries
+            pipeline._vector_store = MagicMock()
+            pipeline._vector_store.search = AsyncMock(return_value=[])
+
+            selected_text = "ROS 2 uses a publish-subscribe pattern for communication."
+            result = await pipeline.query_selection(
+                message="What pattern does ROS 2 use?",
+                selected_text=selected_text,
+            )
+
+            # Vector store search should NOT be called
+            pipeline._vector_store.search.assert_not_called()
+
+            # Context should be the selected text
+            assert selected_text in result.context
+
+    @pytest.mark.unit
+    @pytest.mark.asyncio
+    async def test_selection_query_skips_vector_search(self) -> None:
+        """selection query should skip vector search entirely (FR-018)."""
+        env_vars = {
+            "OPENAI_API_KEY": "sk-test-key",
+            "QDRANT_URL": "https://test.qdrant.io",
+            "QDRANT_API_KEY": "qdrant-key",
+            "DATABASE_URL": "postgresql+asyncpg://user:pass@localhost/db",
+        }
+        with patch.dict(os.environ, env_vars, clear=False):
+            from services.rag import RAGPipeline
+
+            pipeline = RAGPipeline()
+
+            # Mock vector store
+            pipeline._vector_store = MagicMock()
+            pipeline._vector_store.search = AsyncMock(return_value=[])
+
+            await pipeline.query_selection(
+                message="Explain this",
+                selected_text="A node is a process that performs computation.",
+            )
+
+            # Verify vector store search was NOT called
+            pipeline._vector_store.search.assert_not_called()
+
+    @pytest.mark.unit
+    def test_check_selection_sufficiency_short_text(self) -> None:
+        """check_selection_sufficiency should return False for very short selections (FR-020)."""
+        env_vars = {
+            "OPENAI_API_KEY": "sk-test-key",
+            "QDRANT_URL": "https://test.qdrant.io",
+            "QDRANT_API_KEY": "qdrant-key",
+            "DATABASE_URL": "postgresql+asyncpg://user:pass@localhost/db",
+        }
+        with patch.dict(os.environ, env_vars, clear=False):
+            from services.rag import RAGPipeline
+
+            pipeline = RAGPipeline()
+
+            # Very short selection
+            is_sufficient = pipeline.check_selection_sufficiency(
+                selected_text="ROS",
+                query="What is this?",
+            )
+
+            assert is_sufficient is False
+
+    @pytest.mark.unit
+    def test_check_selection_sufficiency_adequate_text(self) -> None:
+        """check_selection_sufficiency should return True for adequate selections."""
+        env_vars = {
+            "OPENAI_API_KEY": "sk-test-key",
+            "QDRANT_URL": "https://test.qdrant.io",
+            "QDRANT_API_KEY": "qdrant-key",
+            "DATABASE_URL": "postgresql+asyncpg://user:pass@localhost/db",
+        }
+        with patch.dict(os.environ, env_vars, clear=False):
+            from services.rag import RAGPipeline
+
+            pipeline = RAGPipeline()
+
+            # Adequate selection
+            is_sufficient = pipeline.check_selection_sufficiency(
+                selected_text="ROS 2 is a set of software libraries and tools for building robot applications. It is designed to be modular and flexible.",
+                query="What is ROS 2?",
+            )
+
+            assert is_sufficient is True
+
+    @pytest.mark.unit
+    @pytest.mark.asyncio
+    async def test_selection_query_insufficient_context_message(self) -> None:
+        """selection query with insufficient context should return explicit message (FR-020)."""
+        env_vars = {
+            "OPENAI_API_KEY": "sk-test-key",
+            "QDRANT_URL": "https://test.qdrant.io",
+            "QDRANT_API_KEY": "qdrant-key",
+            "DATABASE_URL": "postgresql+asyncpg://user:pass@localhost/db",
+        }
+        with patch.dict(os.environ, env_vars, clear=False):
+            from services.rag import RAGPipeline
+
+            pipeline = RAGPipeline()
+
+            # Very short selection - should be insufficient
+            result = await pipeline.query_selection(
+                message="Explain in detail what this means",
+                selected_text="Hi",  # Too short
+            )
+
+            # Should indicate insufficient context
+            assert result.is_insufficient_selection is True

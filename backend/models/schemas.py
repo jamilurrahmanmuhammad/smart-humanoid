@@ -71,8 +71,8 @@ class Citation(BaseModel):
     heading: str = Field(max_length=200, description="Section heading")
     quote: str = Field(max_length=500, description="Verbatim quote extract (FR-005)")
     link: str = Field(max_length=500, description="Deep link to source location (FR-010)")
-    relevance_score: float = Field(
-        ge=0.0, le=1.0, description="Semantic similarity score"
+    relevance_score: Optional[float] = Field(
+        default=None, ge=0.0, le=1.0, description="Semantic similarity score"
     )
 
 
