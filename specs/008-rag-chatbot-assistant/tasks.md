@@ -982,15 +982,16 @@ Phase 4        Phase 5        Phase 6        Phase 7  │
 
 ### 13.6 Integration & E2E Tests
 
-- [ ] T130 [RED] [US3] Write E2E test for page content context in `tests/e2e/test_page_content_e2e.py`
+- [x] T130 [RED] [US3] Write E2E test for page content context in `tests/e2e/test_page_content_e2e.py`
   - Test: User on chapter page asks "explain this page" → gets content-aware response
   - Test: Response references content from the actual page
+  - 8 E2E tests: vague query with context, page navigation updates, specific query ignores content, fallback without content, long content truncation, selection with page context, error handling
   - FR: FR-033
 
-- [ ] T131 [GREEN] [US3] Verify E2E test passes with full implementation
-  - All components integrated
-  - Frontend extracts content → WebSocket sends → Backend uses for vague queries
-  - Acceptance: T130 passes
+- [x] T131 [GREEN] [US3] Verify E2E test passes with full implementation
+  - All components integrated: Frontend extracts content → WebSocket sends → Backend uses for vague queries
+  - 301 backend tests pass (including 8 new E2E tests)
+  - Acceptance: T130 passes ✓
 
 ---
 
