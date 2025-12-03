@@ -126,8 +126,12 @@ class TestVectorStoreSearch:
                 "chunk_index": 0,
             }
 
+            # Mock query_points response (has .points attribute)
+            mock_response = MagicMock()
+            mock_response.points = [mock_point]
+
             client._client = MagicMock()
-            client._client.search = MagicMock(return_value=[mock_point])
+            client._client.query_points = MagicMock(return_value=mock_response)
 
             query_vector = [0.1] * 1536  # Mock embedding
             results = await client.search(query_vector)
@@ -153,12 +157,12 @@ class TestVectorStoreSearch:
 
             client = VectorStoreClient()
 
-            # Mock multiple results
+            # Mock multiple results (all above threshold)
             mock_points = []
-            for i in range(10):
+            for i in range(5):
                 point = MagicMock()
                 point.id = f"chunk-{i}"
-                point.score = 0.9 - (i * 0.05)
+                point.score = 0.9 - (i * 0.05)  # All above 0.5 threshold
                 point.payload = {
                     "module_id": 1,
                     "chapter_id": 1,
@@ -171,8 +175,12 @@ class TestVectorStoreSearch:
                 }
                 mock_points.append(point)
 
+            # Mock query_points response (has .points attribute)
+            mock_response = MagicMock()
+            mock_response.points = mock_points
+
             client._client = MagicMock()
-            client._client.search = MagicMock(return_value=mock_points[:5])
+            client._client.query_points = MagicMock(return_value=mock_response)
 
             query_vector = [0.1] * 1536
             results = await client.search(query_vector, limit=5)
@@ -208,16 +216,20 @@ class TestVectorStoreSearch:
                 "chunk_index": 0,
             }
 
+            # Mock query_points response (has .points attribute)
+            mock_response = MagicMock()
+            mock_response.points = [mock_point]
+
             client._client = MagicMock()
-            client._client.search = MagicMock(return_value=[mock_point])
+            client._client.query_points = MagicMock(return_value=mock_response)
 
             query_vector = [0.1] * 1536
             filters = SearchFilters(chapter_id=3)
             results = await client.search(query_vector, filters=filters)
 
             # Verify filter was passed to qdrant
-            client._client.search.assert_called_once()
-            call_kwargs = client._client.search.call_args[1]
+            client._client.query_points.assert_called_once()
+            call_kwargs = client._client.query_points.call_args[1]
             assert "query_filter" in call_kwargs
 
     @pytest.mark.unit
@@ -253,8 +265,12 @@ class TestVectorStoreSearch:
                 }
                 mock_points.append(point)
 
+            # Mock query_points response (has .points attribute)
+            mock_response = MagicMock()
+            mock_response.points = mock_points
+
             client._client = MagicMock()
-            client._client.search = MagicMock(return_value=mock_points)
+            client._client.query_points = MagicMock(return_value=mock_response)
 
             query_vector = [0.1] * 1536
             results = await client.search(query_vector, similarity_threshold=0.7)

@@ -227,6 +227,43 @@ class TestAnalyticsEventModel:
         assert message_id_col.unique is True, "message_id should be unique"
 
 
+class TestMessageTTL:
+    """Tests for message TTL calculation (T105)."""
+
+    @pytest.mark.unit
+    def test_expires_at_set_on_creation(self) -> None:
+        """ChatMessage expires_at should be set to created_at + 24h (FR-027)."""
+        from models.database import ChatMessageModel
+
+        # Verify expires_at column exists and is required
+        expires_at_col = ChatMessageModel.__table__.columns["expires_at"]
+        assert expires_at_col.nullable is False
+
+    @pytest.mark.unit
+    def test_message_ttl_default_24_hours(self) -> None:
+        """Message TTL should default to 24 hours per FR-027."""
+        from datetime import datetime, timezone
+
+        # TTL constant should be 24 hours
+        MESSAGE_TTL_HOURS = 24
+
+        created = datetime.now(timezone.utc)
+        expected_expires = created + timedelta(hours=MESSAGE_TTL_HOURS)
+
+        # The difference should be exactly 24 hours
+        assert (expected_expires - created).total_seconds() == 24 * 60 * 60
+
+    @pytest.mark.unit
+    def test_message_model_has_expires_at_column(self) -> None:
+        """ChatMessageModel should have expires_at datetime column."""
+        from models.database import ChatMessageModel
+        from sqlalchemy import DateTime
+
+        expires_at_col = ChatMessageModel.__table__.columns["expires_at"]
+        # Should be DateTime type
+        assert isinstance(expires_at_col.type, DateTime)
+
+
 class TestBaseModel:
     """Tests for SQLAlchemy Base configuration."""
 

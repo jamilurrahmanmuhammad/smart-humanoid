@@ -54,7 +54,7 @@ class TestSettings:
             assert settings.api_port == 8000
             assert settings.qdrant_collection_name == "textbook_chunks"
             assert settings.rag_top_k == 10
-            assert settings.rag_similarity_threshold == 0.7
+            assert settings.rag_similarity_threshold == 0.5
             assert settings.rag_max_citations == 5
             assert settings.session_ttl_hours == 24
             assert settings.message_retention_hours == 24

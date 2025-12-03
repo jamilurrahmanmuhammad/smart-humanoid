@@ -10,7 +10,7 @@ from typing import AsyncGenerator
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from api.routes import chat, health
+from api.routes import chat, health, sessions
 
 # Version info
 __version__ = "0.1.0"
@@ -67,9 +67,14 @@ def create_app() -> FastAPI:
         allow_headers=["*"],
     )
 
+    # Add request timing middleware for observability (T120)
+    from api.middleware import RequestTimingMiddleware
+    app.add_middleware(RequestTimingMiddleware)
+
     # Register routes
     app.include_router(health.router)
     app.include_router(chat.router)
+    app.include_router(sessions.router)
 
     return app
 
